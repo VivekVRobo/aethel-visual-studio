@@ -1,7 +1,3 @@
-/* ========================================================================== 
-   AETHEL Visual Studio — Client-Side Logic
-   ========================================================================== */
-
 let currentActiveStyle = '';
 
 function openLightbox(imgSrc, title, category) {
@@ -26,9 +22,7 @@ function closeLightbox(event) {
   const modal = document.getElementById('lightbox');
   if (!modal) return;
 
-  if (event && event.target.closest('.lightbox-dialog') && !event.target.classList.contains('lightbox-close')) {
-    return;
-  }
+  if (event && event.target.closest('.lightbox-dialog') && !event.target.classList.contains('lightbox-close')) return;
 
   modal.classList.remove('active');
   document.body.style.overflow = '';
@@ -57,10 +51,8 @@ function selectTier(tierName) {
   if (!briefEl) return;
 
   setTimeout(() => {
-    const marker = `[Selected Tier: ${tierName}]`;
-    if (!briefEl.value.includes(marker)) {
-      briefEl.value = `${marker}\n\n${briefEl.value}`;
-    }
+    const marker = `Selected package: ${tierName}`;
+    if (!briefEl.value.includes(marker)) briefEl.value = `${marker}\n\n${briefEl.value}`;
     briefEl.focus();
   }, 350);
 }
@@ -79,19 +71,19 @@ function handleBriefSubmit(event) {
 
   const name = nameEl.value.trim();
   const email = emailEl.value.trim();
-  const niche = projectTypeEl.value;
+  const projectType = projectTypeEl.value;
   const resolution = resolutionEl.value;
   const reference = referenceEl ? referenceEl.value.trim() : '';
   const brief = briefEl.value.trim();
 
   if (!name || !email || !brief) return;
 
-  const subject = encodeURIComponent(`Aethel Visual Inquiry — [${niche}] ${name}`);
-  const bodyText = `Hello Vivek / Aethel Visual Studio,\n\nI would like to request custom high-resolution visual artwork for my project.\n\n--- CLIENT & PROJECT DETAILS ---\nName: ${name}\nEmail: ${email}\nProject / Niche: ${niche}\nTarget Resolution: ${resolution}\nVisual Style Reference: ${reference || 'Open to recommendations based on portfolio samples'}\n\n--- CREATIVE BRIEF & VISION ---\n${brief}\n\nBest regards,\n${name}`;
+  const subject = encodeURIComponent(`Aethel project inquiry | ${projectType} | ${name}`);
+  const bodyText = `Hello Vivek,\n\nI would like to discuss a visual project.\n\nName: ${name}\nEmail: ${email}\nProject type: ${projectType}\nTarget delivery: ${resolution}\nReference direction: ${reference || 'Open to your recommendation'}\n\nProject brief\n${brief}\n\nThank you,\n${name}`;
 
   window.location.href = `mailto:vivekvala562@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
 }
 
-document.addEventListener('keydown', (event) => {
+document.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeLightbox();
 });
