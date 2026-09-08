@@ -1,0 +1,121 @@
+/* Aethel artwork framing system
+   Gallery cards use intentional crops. Artwork detail pages preserve the full composition. */
+
+/* Per artwork focal points for cropped cards. */
+.focal-neo { object-position: 50% 52% !important; }
+.focal-astral { object-position: 51% 22% !important; }
+.focal-vedic { object-position: 57% 48% !important; }
+.focal-cyber { object-position: 50% 48% !important; }
+.focal-alpine { object-position: 45% 50% !important; }
+.focal-quantum { object-position: 54% 50% !important; }
+
+/* Homepage hero keeps the city centre and illuminated skyline visible. */
+.hero-frame .focal-neo { object-position: 52% 50% !important; }
+
+/* Curated work page. Each card has a deliberate footprint instead of one generic ratio. */
+.work-page-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+.work-page-grid .work-card {
+  min-height: 360px;
+}
+
+.work-page-grid .work-feature-wide {
+  grid-column: span 8;
+  min-height: 470px;
+}
+
+.work-page-grid .work-feature-portrait {
+  grid-column: span 4;
+  min-height: 470px;
+}
+
+.work-page-grid .work-half {
+  grid-column: span 6;
+  min-height: 370px;
+}
+
+/* Astral Guardian needs more of the upper body and face retained in cropped views. */
+.work-page-grid .work-feature-portrait img {
+  object-position: 51% 18% !important;
+}
+
+/* Full artwork presentation on detail pages. */
+.art-detail-page .art-hero-img-wrap {
+  width: 100%;
+  overflow: hidden;
+  background: #0b0b0a;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.28);
+}
+
+.art-detail-page .art-hero-img-wrap.art-landscape {
+  aspect-ratio: 16 / 9;
+}
+
+.art-detail-page .art-hero-img-wrap.art-portrait {
+  width: min(760px, 100%);
+  aspect-ratio: 4 / 5;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.art-detail-page .art-hero-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #080807;
+}
+
+/* Keep the portrait detail page visually balanced below the narrower artwork. */
+.art-detail-page:has(.art-hero-img-wrap.art-portrait) .art-grid {
+  width: min(980px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Home cards use per image focal points while keeping the established editorial grid. */
+.work-card img {
+  transform-origin: center center;
+}
+
+@media (max-width: 900px) {
+  .work-page-grid .work-feature-wide,
+  .work-page-grid .work-feature-portrait,
+  .work-page-grid .work-half {
+    grid-column: span 12;
+  }
+
+  .work-page-grid .work-feature-wide,
+  .work-page-grid .work-half {
+    min-height: 52vw;
+  }
+
+  .work-page-grid .work-feature-portrait {
+    width: min(520px, 100%);
+    min-height: 640px;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 620px) {
+  .work-page-grid .work-feature-wide,
+  .work-page-grid .work-half {
+    min-height: 66vw;
+  }
+
+  .work-page-grid .work-feature-portrait {
+    min-height: 128vw;
+    max-height: 680px;
+  }
+
+  .art-detail-page .art-hero-img-wrap {
+    border-radius: 16px;
+  }
+}

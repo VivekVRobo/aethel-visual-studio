@@ -1,10 +1,14 @@
 (() => {
-  if (!document.querySelector('link[href="/refine.css"]')) {
-    const refine = document.createElement('link');
-    refine.rel = 'stylesheet';
-    refine.href = '/refine.css';
-    document.head.appendChild(refine);
-  }
+  const ensureStylesheet = (href) => {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  };
+
+  ensureStylesheet('/refine.css');
+  ensureStylesheet('/framing.css');
 
   if (!document.querySelector('link[rel="icon"]')) {
     const icon = document.createElement('link');
