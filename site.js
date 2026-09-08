@@ -6,7 +6,10 @@
       const open = links.classList.toggle('open');
       toggle.setAttribute('aria-expanded', String(open));
     });
-    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }));
   }
 
   const path = location.pathname.replace(/\/$/, '') || '/';
@@ -16,7 +19,7 @@
   });
 
   const reveal = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && reveal.length) {
+  if ('IntersectionObserver' in window && reveal.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -31,4 +34,12 @@
   }
 
   document.querySelectorAll('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
+
+  document.querySelectorAll('.footer-bottom').forEach(footer => {
+    if (footer.querySelector('.legal-links')) return;
+    const legal = document.createElement('span');
+    legal.className = 'legal-links';
+    legal.innerHTML = '<a href="/terms" style="color:inherit;text-decoration:none">Terms</a> · <a href="/privacy" style="color:inherit;text-decoration:none">Privacy</a>';
+    footer.appendChild(legal);
+  });
 })();
