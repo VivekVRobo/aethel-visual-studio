@@ -67,6 +67,16 @@ The premium V2 direction uses:
 
 The website remains a static HTML/CSS/JavaScript site. The contact form uses a `mailto:` workflow: it prepares a structured email in the visitor's own email client rather than silently posting project information to an Aethel backend.
 
+## Local preview
+
+Because production uses Vercel `cleanUrls`, preview with the Vercel development server when possible:
+
+```bash
+npx vercel dev
+```
+
+A generic static server can still display individual `.html` files, but clean paths such as `/work` may not resolve the same way they do on Vercel.
+
 ## Deployment
 
 Designed for Vercel static deployment with clean URLs and basic security/cache headers.
