@@ -3,14 +3,36 @@
 
 /* Per artwork focal points for cropped cards. */
 .focal-neo { object-position: 50% 52% !important; }
-.focal-astral { object-position: 51% 22% !important; }
+.focal-astral { object-position: 51% 18% !important; }
 .focal-vedic { object-position: 57% 48% !important; }
 .focal-cyber { object-position: 50% 48% !important; }
 .focal-alpine { object-position: 45% 50% !important; }
 .focal-quantum { object-position: 54% 50% !important; }
 
-/* Homepage hero keeps the city centre and illuminated skyline visible. */
-.hero-frame .focal-neo { object-position: 52% 50% !important; }
+/* Portrait artwork now owns the tall homepage hero instead of forcing a landscape into it. */
+.hero-art.hero-portrait {
+  width: min(560px, 100%);
+  min-height: 0;
+  aspect-ratio: 4 / 5;
+  justify-self: end;
+}
+
+.hero-art.hero-portrait .hero-frame .focal-astral {
+  object-position: 51% 16% !important;
+}
+
+/* Homepage selected work uses landscape friendly ratios. */
+.home-work-grid .home-wide {
+  grid-column: span 12;
+  min-height: 0;
+  aspect-ratio: 16 / 8.7;
+}
+
+.home-work-grid .home-half {
+  grid-column: span 6;
+  min-height: 0;
+  aspect-ratio: 16 / 10;
+}
 
 /* Curated work page. Each card has a deliberate footprint instead of one generic ratio. */
 .work-page-grid {
@@ -39,7 +61,6 @@
   min-height: 370px;
 }
 
-/* Astral Guardian needs more of the upper body and face retained in cropped views. */
 .work-page-grid .work-feature-portrait img {
   object-position: 51% 18% !important;
 }
@@ -73,16 +94,37 @@
   background: #080807;
 }
 
-/* Keep the portrait detail page visually balanced below the narrower artwork. */
 .art-detail-page:has(.art-hero-img-wrap.art-portrait) .art-grid {
   width: min(980px, 100%);
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Home cards use per image focal points while keeping the established editorial grid. */
 .work-card img {
   transform-origin: center center;
+}
+
+@media (max-width: 1100px) {
+  .hero-art.hero-portrait {
+    width: min(500px, 100%);
+  }
+}
+
+@media (max-width: 980px) {
+  .hero-art.hero-portrait {
+    width: min(520px, 100%);
+    justify-self: center;
+  }
+
+  .home-work-grid .home-wide,
+  .home-work-grid .home-half {
+    grid-column: span 12;
+  }
+
+  .home-work-grid .home-wide,
+  .home-work-grid .home-half {
+    aspect-ratio: 16 / 9.6;
+  }
 }
 
 @media (max-width: 900px) {
@@ -94,25 +136,37 @@
 
   .work-page-grid .work-feature-wide,
   .work-page-grid .work-half {
-    min-height: 52vw;
+    min-height: 0;
+    aspect-ratio: 16 / 9.6;
   }
 
   .work-page-grid .work-feature-portrait {
     width: min(520px, 100%);
-    min-height: 640px;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
     justify-self: center;
   }
 }
 
 @media (max-width: 620px) {
+  .hero-art.hero-portrait {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+  }
+
+  .home-work-grid .home-wide,
+  .home-work-grid .home-half,
   .work-page-grid .work-feature-wide,
   .work-page-grid .work-half {
-    min-height: 66vw;
+    min-height: 0;
+    aspect-ratio: 16 / 10;
   }
 
   .work-page-grid .work-feature-portrait {
-    min-height: 128vw;
-    max-height: 680px;
+    width: 100%;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: 4 / 5;
   }
 
   .art-detail-page .art-hero-img-wrap {

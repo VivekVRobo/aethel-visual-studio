@@ -129,7 +129,7 @@
   padding: 28px !important;
 }
 
-/* Categories should read like normal editorial metadata, not AI generated labels. */
+/* Categories should read like normal editorial metadata, not generated labels. */
 .work-meta span,
 .catalog-copy .category,
 .pricing-card .badge,
@@ -167,7 +167,19 @@
   font-size: 13px !important;
 }
 
-/* Mobile spacing. */
+/* Tablet and mobile layout corrections. */
+@media (max-width: 980px) {
+  .hero-grid {
+    gap: 36px !important;
+  }
+
+  .dark-panel {
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+    padding: 36px !important;
+  }
+}
+
 @media (max-width: 800px) {
   .section { padding: 62px 0 !important; }
   .section-sm { padding: 48px 0 !important; }
@@ -177,4 +189,56 @@
   .page-title { font-size: clamp(36px, 11vw, 50px) !important; }
   .section-title,
   .confidence-main h2 { font-size: clamp(28px, 9vw, 38px) !important; }
+
+  .dark-panel {
+    padding: 30px 24px !important;
+  }
+
+  .work-meta {
+    left: 20px !important;
+    right: 20px !important;
+    bottom: 18px !important;
+  }
+
+  .work-meta h3 {
+    font-size: 26px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .container,
+  .nav-container,
+  .footer-container {
+    width: min(100% - 28px, var(--max)) !important;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .hero-proof {
+    gap: 12px !important;
+  }
+
+  .proof-item {
+    padding-right: 0 !important;
+  }
+
+  .footer-nav {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .footer-bottom {
+    gap: 10px !important;
+  }
+
+  .service-card,
+  .pricing-card,
+  .contact-panel,
+  .confidence-main,
+  .confidence-card,
+  .principle {
+    padding: 22px !important;
+  }
 }
