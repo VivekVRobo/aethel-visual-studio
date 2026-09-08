@@ -1,4 +1,4 @@
-/* ==========================================================================
+/* ========================================================================== 
    AETHEL Visual Studio — Client-Side Logic
    ========================================================================== */
 
@@ -10,28 +10,33 @@ function openLightbox(imgSrc, title, category) {
   const titleEl = document.getElementById('lightboxTitle');
   const catEl = document.getElementById('lightboxCategory');
 
+  if (!modal || !img || !titleEl || !catEl) return;
+
   img.src = imgSrc;
-  img.alt = title;
-  titleEl.textContent = title;
-  catEl.textContent = category;
-  currentActiveStyle = title;
+  img.alt = title || 'Artwork preview';
+  titleEl.textContent = title || '';
+  catEl.textContent = category || '';
+  currentActiveStyle = title || '';
 
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
 function closeLightbox(event) {
+  const modal = document.getElementById('lightbox');
+  if (!modal) return;
+
   if (event && event.target.closest('.lightbox-dialog') && !event.target.classList.contains('lightbox-close')) {
     return;
   }
-  const modal = document.getElementById('lightbox');
+
   modal.classList.remove('active');
   document.body.style.overflow = '';
 }
 
 function requestFromLightbox() {
   closeLightbox();
-  prefillBrief(currentActiveStyle);
+  if (currentActiveStyle) prefillBrief(currentActiveStyle);
 }
 
 function prefillBrief(styleName) {
@@ -39,70 +44,54 @@ function prefillBrief(styleName) {
   const requestSection = document.getElementById('request');
   const briefEl = document.getElementById('projectBrief');
 
-  if (targetEl) {
-    targetEl.value = styleName;
-  }
-
-  requestSection.scrollIntoView({ behavior: 'smooth' });
-  setTimeout(() => {
-    if (briefEl) briefEl.focus();
-  }, 500);
+  if (targetEl) targetEl.value = styleName || '';
+  if (requestSection) requestSection.scrollIntoView({ behavior: 'smooth' });
+  if (briefEl) setTimeout(() => briefEl.focus(), 350);
 }
 
 function selectTier(tierName) {
   const briefEl = document.getElementById('projectBrief');
   const requestSection = document.getElementById('request');
 
-  requestSection.scrollIntoView({ behavior: 'smooth' });
+  if (requestSection) requestSection.scrollIntoView({ behavior: 'smooth' });
+  if (!briefEl) return;
+
   setTimeout(() => {
-    if (briefEl) {
-      if (!briefEl.value.includes(`[Selected Tier: ${tierName}]`)) {
-        briefEl.value = `[Selected Tier: ${tierName}]\n\n` + briefEl.value;
-      }
-      briefEl.focus();
+    const marker = `[Selected Tier: ${tierName}]`;
+    if (!briefEl.value.includes(marker)) {
+      briefEl.value = `${marker}\n\n${briefEl.value}`;
     }
-  }, 500);
+    briefEl.focus();
+  }, 350);
 }
 
 function handleBriefSubmit(event) {
   event.preventDefault();
 
-  const name = document.getElementById('clientName').value.trim();
-  const email = document.getElementById('clientEmail').value.trim();
-  const niche = document.getElementById('projectType').value;
-  const resolution = document.getElementById('targetResolution').value;
-  const reference = document.getElementById('referenceStyle').value.trim();
-  const brief = document.getElementById('projectBrief').value.trim();
+  const nameEl = document.getElementById('clientName');
+  const emailEl = document.getElementById('clientEmail');
+  const projectTypeEl = document.getElementById('projectType');
+  const resolutionEl = document.getElementById('targetResolution');
+  const referenceEl = document.getElementById('referenceStyle');
+  const briefEl = document.getElementById('projectBrief');
+
+  if (!nameEl || !emailEl || !projectTypeEl || !resolutionEl || !briefEl) return;
+
+  const name = nameEl.value.trim();
+  const email = emailEl.value.trim();
+  const niche = projectTypeEl.value;
+  const resolution = resolutionEl.value;
+  const reference = referenceEl ? referenceEl.value.trim() : '';
+  const brief = briefEl.value.trim();
+
+  if (!name || !email || !brief) return;
 
   const subject = encodeURIComponent(`Aethel Visual Inquiry — [${niche}] ${name}`);
-  const bodyText = 
-`Hello Vivek / Aethel Visual Studio,
+  const bodyText = `Hello Vivek / Aethel Visual Studio,\n\nI would like to request custom high-resolution visual artwork for my project.\n\n--- CLIENT & PROJECT DETAILS ---\nName: ${name}\nEmail: ${email}\nProject / Niche: ${niche}\nTarget Resolution: ${resolution}\nVisual Style Reference: ${reference || 'Open to recommendations based on portfolio samples'}\n\n--- CREATIVE BRIEF & VISION ---\n${brief}\n\nBest regards,\n${name}`;
 
-I would like to request custom high-resolution visual artwork for my project.
-
---- CLIENT & PROJECT DETAILS ---
-Name: ${name}
-Email: ${email}
-Project / Niche: ${niche}
-Target Resolution: ${resolution}
-Visual Style Reference: ${reference || 'Open to recommendations based on portfolio samples'}
-
---- CREATIVE BRIEF & VISION ---
-${brief}
-
-Looking forward to your thoughts and initial concept preview notes!
-
-Best regards,
-${name}
-`;
-
-  const mailtoUrl = `mailto:vivekvala562@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
-  window.location.href = mailtoUrl;
+  window.location.href = `mailto:vivekvala562@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
 }
 
-// Close on Escape key
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    closeLightbox();
-  }
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeLightbox();
 });
