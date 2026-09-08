@@ -1,4 +1,11 @@
 (() => {
+  if (!document.querySelector('link[href="/refine.css"]')) {
+    const refine = document.createElement('link');
+    refine.rel = 'stylesheet';
+    refine.href = '/refine.css';
+    document.head.appendChild(refine);
+  }
+
   if (!document.querySelector('link[rel="icon"]')) {
     const icon = document.createElement('link');
     icon.rel = 'icon';
