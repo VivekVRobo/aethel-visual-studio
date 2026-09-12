@@ -209,7 +209,7 @@ function handleBriefSubmit(event) {
   if (!name || !email || !brief) return;
 
   const subject = encodeURIComponent(`Aethel project inquiry | ${projectType} | ${name}`);
-  const bodyText = `Hello Vivek,\n\nI would like to discuss a visual project.\n\nName: ${name}\nEmail: ${email}\nProject type: ${projectType}\nTarget delivery: ${resolution}\nReference direction: ${reference || 'Open to your recommendation'}\n\nProject brief:\n${brief}\n\nThank you,\n${name}`;
+  const bodyText = `Hello Aethel Team,\n\nWe would like to discuss a visual project.\n\nName: ${name}\nEmail: ${email}\nProject type: ${projectType}\nTarget delivery: ${resolution}\nReference direction: ${reference || 'Open to your recommendation'}\n\nProject brief:\n${brief}\n\nThank you,\n${name}`;
 
   window.location.href = `mailto:vivekvala562@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
 }
