@@ -25,6 +25,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (styleEl) styleEl.value = styleParam;
   }
 
+  // Read URL query parameter for prefilled discipline on /contact
+  const disciplineParam = urlParams.get('discipline');
+  if (disciplineParam) {
+    const projectTypeEl = document.getElementById('projectType');
+    if (projectTypeEl) {
+      for (let option of projectTypeEl.options) {
+        if (option.value.toLowerCase().includes(disciplineParam.toLowerCase()) || disciplineParam.toLowerCase().includes(option.value.toLowerCase())) {
+          projectTypeEl.value = option.value;
+          break;
+        }
+      }
+    }
+  }
+
   // Read URL query parameter for prefilled tier
   const tierParam = urlParams.get('tier');
   if (tierParam) {
@@ -58,115 +72,91 @@ function filterGallery(category, buttonEl) {
   }
 
   // Filter cards with subtle staggered reveal animation
-  let visibleCount = 0;
   cards.forEach(card => {
     const cardCat = card.getAttribute('data-category');
     if (category === 'all' || cardCat === category) {
-      card.classList.remove('hidden');
-      card.style.animation = 'none';
-      card.offsetHeight; // trigger reflow
-      card.style.animation = `cardReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) ${Math.min(visibleCount * 0.03, 0.35)}s forwards`;
-      visibleCount++;
+      card.style.display = 'flex';
+      setTimeout(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 50);
     } else {
-      card.classList.add('hidden');
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(16px)';
+      setTimeout(() => {
+        card.style.display = 'none';
+      }, 250);
     }
   });
 
   updateVisibleCards();
 }
 
-// Keep track of currently visible cards for lightbox carousel navigation
+// Update the list of currently visible cards for lightbox carousel navigation
 function updateVisibleCards() {
-  currentVisibleCards = Array.from(document.querySelectorAll('.showcase-card:not(.hidden)'));
+  const allCards = document.querySelectorAll('.showcase-card');
+  currentVisibleCards = Array.from(allCards).filter(c => c.style.display !== 'none');
 }
 
-// Lightbox modal functionality
-function openLightbox(imgSrc, title, category, requestStyle) {
-  updateVisibleCards();
-
-  currentLightboxIndex = currentVisibleCards.findIndex(card => {
-    const cardImg = card.querySelector('.card-media img');
-    return cardImg && cardImg.getAttribute('src') === imgSrc;
-  });
-
-  displayLightboxItem(imgSrc, title, category, requestStyle || title);
-
+// Lightbox Open/Close/Navigate Controls
+function openLightbox(imgSrc, title, subtitle, styleIdentifier) {
   const modal = document.getElementById('lightbox');
-  if (modal) {
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
+  const modalImg = document.getElementById('lightboxImg');
+  const modalTitle = document.getElementById('lightboxTitle');
+  const modalSub = document.getElementById('lightboxSubtitle');
+
+  if (!modal || !modalImg) return;
+
+  currentActiveStyle = styleIdentifier || title;
+  modalImg.src = imgSrc;
+  modalImg.alt = title;
+  if (modalTitle) modalTitle.textContent = title;
+  if (modalSub) modalSub.textContent = subtitle;
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Find index in currentVisibleCards for arrow navigation
+  currentLightboxIndex = currentVisibleCards.findIndex(card => {
+    const img = card.querySelector('img');
+    return img && img.getAttribute('src') === imgSrc;
+  });
 }
 
-function displayLightboxItem(imgSrc, title, category, requestStyle) {
-  const img = document.getElementById('lightboxImg');
-  const titleEl = document.getElementById('lightboxTitle');
-  const catEl = document.getElementById('lightboxCategory');
-
-  if (img) {
-    img.src = imgSrc;
-    img.alt = title || 'Artwork preview';
-  }
-  if (titleEl) titleEl.textContent = title || '';
-  if (catEl) catEl.textContent = category || '';
-  currentActiveStyle = requestStyle || title || '';
+function closeLightbox() {
+  const modal = document.getElementById('lightbox');
+  if (!modal) return;
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 function navigateLightbox(direction) {
-  if (!currentVisibleCards.length || currentLightboxIndex === -1) return;
+  if (!currentVisibleCards || currentVisibleCards.length === 0) return;
 
-  currentLightboxIndex = (currentLightboxIndex + direction + currentVisibleCards.length) % currentVisibleCards.length;
+  currentLightboxIndex += direction;
+  if (currentLightboxIndex < 0) currentLightboxIndex = currentVisibleCards.length - 1;
+  if (currentLightboxIndex >= currentVisibleCards.length) currentLightboxIndex = 0;
+
   const targetCard = currentVisibleCards[currentLightboxIndex];
   if (!targetCard) return;
 
-  const cardImg = targetCard.querySelector('.card-media img');
-  const titleEl = targetCard.querySelector('.card-title');
-  const catEl = targetCard.querySelector('.card-category');
-  const reqBtn = targetCard.querySelector('.card-btn');
-
-  const imgSrc = cardImg ? cardImg.getAttribute('src') : '';
-  const title = titleEl ? titleEl.textContent : '';
-  const category = catEl ? catEl.textContent : '';
-  
-  let reqStyle = title;
-  if (reqBtn) {
-    const clickAttr = reqBtn.getAttribute('onclick') || '';
-    const match = clickAttr.match(/prefillBrief\('(.*?)'\)/);
-    if (match && match[1]) reqStyle = match[1];
-  }
-
-  displayLightboxItem(imgSrc, title, category, reqStyle);
-}
-
-function closeLightbox(event) {
-  if (event && event.target.closest('.lightbox-dialog') && 
-      !event.target.classList.contains('lightbox-close') &&
-      !event.target.classList.contains('lightbox-nav')) {
-    return;
-  }
-  const modal = document.getElementById('lightbox');
-  if (modal) {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
+  const mediaEl = targetCard.querySelector('.card-media');
+  if (mediaEl) {
+    mediaEl.click();
   }
 }
 
-function requestFromLightbox() {
-  closeLightbox();
-  if (currentActiveStyle) prefillBrief(currentActiveStyle);
-}
-
+// Form Pre-fill & Direct Submission
 function prefillBrief(styleName) {
-  const targetEl = document.getElementById('referenceStyle');
-  const requestSection = document.getElementById('request');
   const briefEl = document.getElementById('projectBrief');
+  const styleEl = document.getElementById('referenceStyle');
+  const requestSection = document.getElementById('request');
 
-  if (targetEl && requestSection) {
-    targetEl.value = styleName || '';
+  if (briefEl && requestSection) {
+    if (styleEl) styleEl.value = styleName;
     requestSection.scrollIntoView({ behavior: 'smooth' });
-    if (briefEl) setTimeout(() => briefEl.focus(), 350);
+    setTimeout(() => briefEl.focus(), 350);
   } else {
-    // Navigate directly to contact page with style prefilled in query parameter
     window.location.href = `/contact?style=${encodeURIComponent(styleName || '')}`;
   }
 }
@@ -187,7 +177,7 @@ function selectTier(tierName) {
   }
 }
 
-function handleBriefSubmit(event) {
+async function handleBriefSubmit(event) {
   event.preventDefault();
 
   const nameEl = document.getElementById('clientName');
@@ -196,6 +186,8 @@ function handleBriefSubmit(event) {
   const resolutionEl = document.getElementById('targetResolution');
   const referenceEl = document.getElementById('referenceStyle');
   const briefEl = document.getElementById('projectBrief');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('formStatus');
 
   if (!nameEl || !emailEl || !projectTypeEl || !resolutionEl || !briefEl) return;
 
@@ -206,12 +198,73 @@ function handleBriefSubmit(event) {
   const reference = referenceEl ? referenceEl.value.trim() : '';
   const brief = briefEl.value.trim();
 
-  if (!name || !email || !brief) return;
+  if (!name || !email || !brief) {
+    if (statusEl) {
+      statusEl.className = 'form-status error';
+      statusEl.style.display = 'block';
+      statusEl.textContent = 'Please fill in your name, work email, and project brief.';
+    }
+    return;
+  }
 
-  const subject = encodeURIComponent(`Aethel project inquiry | ${projectType} | ${name}`);
-  const bodyText = `Hello Aethel Team,\n\nWe would like to discuss a visual project.\n\nName: ${name}\nEmail: ${email}\nProject type: ${projectType}\nTarget delivery: ${resolution}\nReference direction: ${reference || 'Open to your recommendation'}\n\nProject brief:\n${brief}\n\nThank you,\n${name}`;
+  // Set loading state
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Transmitting Brief...';
+  }
+  if (statusEl) {
+    statusEl.className = 'form-status loading';
+    statusEl.style.display = 'block';
+    statusEl.textContent = 'Sending your brief directly to studio director Vivek Vala...';
+  }
 
-  window.location.href = `mailto:vivekvala562@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
+  const payload = {
+    name,
+    email,
+    discipline: projectType,
+    resolution,
+    reference: reference || 'Open to recommendation',
+    brief,
+    _subject: `Aethel Project Brief: ${projectType} — ${name}`
+  };
+
+  try {
+    const response = await fetch('https://formsubmit.co/ajax/vivekvala562@gmail.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+
+    if (response.ok && (result.success === 'true' || result.success === true)) {
+      if (statusEl) {
+        statusEl.className = 'form-status success';
+        statusEl.innerHTML = `<strong>✓ Project Brief Transmitted Successfully.</strong><br>Thank you, ${name}. Your brief has been sent directly to studio director Vivek Vala. We will review your requirements and reply with a confirmed scope, delivery timeline, and quote within 24 hours.`;
+      }
+      document.getElementById('briefForm').reset();
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Brief Sent ✓';
+      }
+    } else {
+      throw new Error(result.message || 'Submission failed');
+    }
+  } catch (err) {
+    console.warn('Direct submission error, falling back to mailto:', err);
+    if (statusEl) {
+      statusEl.className = 'form-status error';
+      const mailtoUrl = `mailto:vivekvala562@gmail.com?subject=${encodeURIComponent(`Aethel Project Inquiry | ${projectType} | ${name}`)}&body=${encodeURIComponent(`Hello Aethel Studio,\n\nName: ${name}\nEmail: ${email}\nDiscipline: ${projectType}\nResolution: ${resolution}\nReference: ${reference}\n\nBrief:\n${brief}`)}`;
+      statusEl.innerHTML = `Direct transmission encountered a network issue. <a href="${mailtoUrl}" style="color:var(--gold-2);text-decoration:underline;font-weight:600;">Click here to send immediately via your email client →</a>`;
+    }
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Project Brief →';
+    }
+  }
 }
 
 // Keyboard controls for lightbox navigation & escape

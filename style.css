@@ -1171,3 +1171,27 @@ img{max-width:100%;display:block} a{color:inherit} button,input,textarea,select{
   .services-showcase-grid { grid-template-columns: 1fr; }
   .standards-grid { grid-template-columns: 1fr; }
 }
+
+/* Contact Form Status Notifications */
+.form-status {
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 18px;
+}
+.form-status.success {
+  background: rgba(46, 125, 50, 0.15);
+  border: 1px solid rgba(76, 175, 80, 0.4);
+  color: #a5d6a7;
+}
+.form-status.error {
+  background: rgba(198, 40, 40, 0.15);
+  border: 1px solid rgba(239, 83, 80, 0.4);
+  color: #ef9a9a;
+}
+.form-status.loading {
+  background: rgba(216, 187, 120, 0.1);
+  border: 1px solid var(--line-strong);
+  color: var(--gold-2);
+}

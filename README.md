@@ -4,10 +4,10 @@ A standalone multi page website for **Aethel Visual Studio**, an independent vis
 
 ## Current capability
 
-- Six curated showcase pieces with web previews and verified 8K master files.
+- 51 curated showcase pieces with web previews and verified 8K master files across 8 commercial disciplines.
 - 4K and 8K standard delivery tiers.
 - Manual full size review for visible artifacts, edge problems, texture issues and upscaling problems.
-- Larger delivery sizes are considered only when the artwork still holds up after review.
+- Larger delivery sizes (including 16K ultra-scale) are considered only when the artwork still holds up after optical review.
 - Project scoped commercial use licensing.
 
 The site does **not** claim native detail 16K or 24K as a standard capability, professional video editing, certified architectural rendering, real product photography, fabricated clients, fabricated testimonials, or guaranteed turnaround and conversion rates.
@@ -17,15 +17,21 @@ The site does **not** claim native detail 16K or 24K as a standard capability, p
 ### Main client journey
 
 - `/` studio entry point and selected work
-- `/work` six piece visual catalog
+- `/work` 51-piece commercial visual catalog across 8 disciplines
 - `/services` service overview
 - `/process` project workflow and quality review
 - `/pricing` starting prices, scope factors and common questions
 - `/about` studio and operator information
-- `/contact` project brief and direct email route
+- `/contact` project brief and direct asynchronous lead capture
 
-### Artwork pages
+### Artwork case pages
 
+- `/art/blood-moon-duelist`
+- `/art/orbital-wheel-habitat`
+- `/art/chimera-hypercar`
+- `/art/amalfi-cliffside-villa`
+- `/art/cellular-youth-serum`
+- `/art/tuscan-morning-espresso`
 - `/art/neo-kyoto-2099`
 - `/art/vedic-citadel`
 - `/art/astral-guardian`
@@ -35,12 +41,15 @@ The site does **not** claim native detail 16K or 24K as a standard capability, p
 
 ### Service pages
 
-- `/services/custom-game-concept-art`
-- `/services/custom-youtube-artwork`
-- `/services/fantasy-book-cover-art`
-- `/services/cyberpunk-concept-art`
-- `/services/high-resolution-brand-visuals`
-- `/services/custom-8k-artwork`
+- `/services/custom-game-concept-art` (Discipline 01: Key Art & Entertainment)
+- `/services/architectural-spatial-visualization` (Discipline 02: Architecture & Estates)
+- `/services/luxury-product-stills` (Discipline 03: Prestige Luxury Stills)
+- `/services/cyberpunk-concept-art` (Discipline 04: Worldbuilding & Concept Art)
+- `/services/automotive-concept-mobility` (Discipline 05: Automotive Stills)
+- `/services/fantasy-book-cover-art` (Discipline 06: Publishing & Creator Art)
+- `/services/high-resolution-brand-visuals` (Brand & Commercial Visuals)
+- `/services/custom-youtube-artwork` (Creator Art)
+- `/services/custom-8k-artwork` (High-Resolution Mastering)
 
 ### Other pages
 
