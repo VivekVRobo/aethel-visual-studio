@@ -1,6 +1,6 @@
-# Aethel Visual Studio
+# Vexnaire Visual Studio
 
-A standalone multi page website for **Aethel Visual Studio**, an independent visual art service operated by Vivek Vala.
+A standalone multi page website for **Vexnaire Visual Studio**, an independent visual art service operated by Vivek Vala.
 
 ## Current capability
 
@@ -66,7 +66,7 @@ The site uses a dark editorial style with warm neutral accents, large artwork, r
 
 ## Inquiry model
 
-The website is static HTML, CSS and JavaScript. The contact form uses a `mailto:` workflow. It prepares an email in the visitor's own email client rather than sending project information to an Aethel server.
+The website is static HTML, CSS and JavaScript. The contact form uses a `mailto:` workflow. It prepares an email in the visitor's own email client rather than sending project information to an Vexnaire server.
 
 ## Local preview
 
@@ -84,7 +84,7 @@ Designed for Vercel static deployment with clean URLs and basic security and cac
 
 Production target:
 
-`https://aethel-visual-studio.vercel.app`
+`https://vexnaire-visual-studio.vercel.app`
 
 ## Commercial baseline
 

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aethel-visual-studio.vercel.app/sitemap.xml
+Sitemap: https://vexnaire-visual-studio.vercel.app/sitemap.xml

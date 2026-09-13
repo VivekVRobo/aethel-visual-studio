@@ -1,5 +1,5 @@
 /* ==========================================================================
-   AETHEL Visual Studio — Client-Side Gallery, Filter & Lightbox Engine
+   VEXNAIRE Visual Studio — Client-Side Gallery, Filter & Lightbox Engine
    ========================================================================== */
 
 let currentActiveStyle = '';
@@ -225,7 +225,7 @@ async function handleBriefSubmit(event) {
     resolution,
     reference: reference || 'Open to recommendation',
     brief,
-    _subject: `Aethel Project Brief: ${projectType} — ${name}`
+    _subject: `Vexnaire Project Brief: ${projectType} — ${name}`
   };
 
   try {
@@ -257,7 +257,7 @@ async function handleBriefSubmit(event) {
     console.warn('Direct submission error, falling back to mailto:', err);
     if (statusEl) {
       statusEl.className = 'form-status error';
-      const mailtoUrl = `mailto:vivekvala562@gmail.com?subject=${encodeURIComponent(`Aethel Project Inquiry | ${projectType} | ${name}`)}&body=${encodeURIComponent(`Hello Aethel Studio,\n\nName: ${name}\nEmail: ${email}\nDiscipline: ${projectType}\nResolution: ${resolution}\nReference: ${reference}\n\nBrief:\n${brief}`)}`;
+      const mailtoUrl = `mailto:vivekvala562@gmail.com?subject=${encodeURIComponent(`Vexnaire Project Inquiry | ${projectType} | ${name}`)}&body=${encodeURIComponent(`Hello Vexnaire Studio,\n\nName: ${name}\nEmail: ${email}\nDiscipline: ${projectType}\nResolution: ${resolution}\nReference: ${reference}\n\nBrief:\n${brief}`)}`;
       statusEl.innerHTML = `Direct transmission encountered a network issue. <a href="${mailtoUrl}" style="color:var(--gold-2);text-decoration:underline;font-weight:600;">Click here to send immediately via your email client →</a>`;
     }
     if (submitBtn) {
